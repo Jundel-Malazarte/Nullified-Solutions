@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Nullified Solutions</title>
+    <link rel="stylesheet" href="/css/style.css"/>
+    <link rel="stylesheet" href="/css/dashboard.css" />
+    <link rel="icon" href="images/Nullified_Logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="dash-body">
+    <div class="dash-layout">
+      <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+      <!-- ============ SIDEBAR ============ -->
+      <aside class="sidebar" id="sidebar">
+        <a class="sidebar-brand" href="dashboard.html">
+          <img src="images/Nullified_Logo.png" alt="Nullified Solutions" />
+          <span>Nullified Solutions</span>
+        </a>
+
+        <p class="sidebar-label">MENU</p>
+        <nav class="sidebar-nav" id="sidebarNav">
+          <a href="#overview" class="active" data-target="overview"><span class="ic">🏠</span> Dashboard</a>
+          <a href="#book" data-target="book"><span class="ic">🗓️</span> Book a Repair</a>
+          <a href="#bookings" data-target="bookings"><span class="ic">🧾</span> My Bookings</a>
+          <a href="#premium" data-target="premium"><span class="ic">⭐</span> Premium Accounts</a>
+          <a href="#software" data-target="software"><span class="ic">💾</span> Software Store</a>
+          <a href="#settings" data-target="settings"><span class="ic">⚙️</span> Account Settings</a>
+        </nav>
+
+        <div class="sidebar-foot">
+          <button class="sidebar-logout" id="logoutBtn" type="button">
+            <span class="ic">↩️</span> Log out
+          </button>
+        </div>
+      </aside>
+
+      <!-- ============ MAIN ============ -->
+      <div class="dash-main">
+        <header class="dash-topbar">
+          <div class="dash-topbar-left">
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle menu">☰</button>
+            <div class="dash-topbar-title">
+              <p>Welcome back!</p>
+              <h1 id="pageTitle">Dashboard</h1>
+            </div>
+          </div>
+
+          <div class="dash-user">
+            <div class="dash-user-info">
+              <span class="dash-user-name" id="userName">full name</span>
+              <span class="dash-user-email" id="userEmail">email@example.com</span>
+            </div>
+            <div class="dash-avatar" id="userAvatar">JD</div>
+            <button class="dash-logout" id="logoutBtn2" type="button">Log out</button>
+          </div>
+        </header>
+
+        <main class="dash-content">
+          <!-- ===== OVERVIEW ===== -->
+          <section class="dash-section active" id="overview">
+            <div class="dash-section-head">
+              <h2>Your overview</h2>
+              <p>Here's what's happening with your repairs and account today.</p>
+            </div>
+
+            <div class="stat-grid">
+              <div class="stat-card">
+                <p class="stat-label">Active Bookings</p>
+                <p class="stat-value" id="statActive">2</p>
+                <p class="stat-sub">Currently in progress</p>
+              </div>
+              <div class="stat-card">
+                <p class="stat-label">Completed Repairs</p>
+                <p class="stat-value" id="statCompleted">5</p>
+                <p class="stat-sub">All time</p>
+              </div>
+              <div class="stat-card">
+                <p class="stat-label">Premium Subscriptions</p>
+                <p class="stat-value" id="statPremium">1</p>
+                <p class="stat-sub">Active plan</p>
+              </div>
+              <div class="stat-card">
+                <p class="stat-label">Next Appointment</p>
+                <p class="stat-value" style="font-size: 18px;">Sept 10, 2PM</p>
+                <p class="stat-sub">Screen replacement — Laptop</p>
+              </div>
+            </div>
+
+            <div class="quick-actions">
+              <button type="button" data-target="book" class="nav-jump">Book a repair</button>
+              <button type="button" class="ghost nav-jump" data-target="premium">Browse premium accounts</button>
+              <button type="button" class="ghost nav-jump" data-target="software">Visit software store</button>
+            </div>
+
+            <div class="dash-panel">
+              <h3>Recent activity</h3>
+              <p>Your latest bookings and orders.</p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Booking ID</th>
+                      <th>Device</th>
+                      <th>Service</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recentActivityBody">
+                    <!-- populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== BOOK A REPAIR ===== -->
+          <section class="dash-section" id="book">
+            <div class="dash-section-head">
+              <h2>Book a repair</h2>
+              <p>Tell us about your device and we'll confirm a time that works for you.</p>
+            </div>
+
+            <div class="dash-panel">
+              <form class="booking-form" id="bookingForm">
+                <label>Full name
+                  <input type="text" name="fullName" placeholder="Your Full Name" required />
+                </label>
+                <label>Contact number
+                  <input type="tel" name="phone" placeholder="09xx xxx xxxx" required />
+                </label>
+
+                <label>Device type
+                  <select name="deviceType" id="deviceType" required>
+                    <option value="">Select device</option>
+                    <option value="Laptop">Laptop / Computer</option>
+                    <option value="Phone">Mobile Phone</option>
+                    <option value="Tablet">Tablet</option>
+                  </select>
+                </label>
+                <label>Brand & Model
+                  <input type="text" name="model" placeholder="e.g. Samsung S21" required />
+                </label>
+
+                <label>Issue type
+                  <select name="issueType" required>
+                    <option value="">Select issue</option>
+                    <option>Diagnostic Check</option>
+                    <option>Screen Replacement</option>
+                    <option>Battery Replacement</option>
+                    <option>Housing / Frame Replacement</option>
+                    <option>Charging Port Repair</option>
+                    <option>Camera Repair</option>
+                    <option>Speaker / Microphone Repair</option>
+                    <option>OS Installation / Software Issue</option>
+                    <option>Virus Removal</option>
+                    <option>Water Damage</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+                <label>Service type
+                  <select name="serviceType" required>
+                    <option value="">Select service</option>
+                    <option>Walk-in / Drop-off</option>
+                    <option>Home Service</option>
+
+                  </select>
+                </label>
+
+                <label>Preferred date
+                  <input type="date" name="date" required />
+                </label>
+                <label>Preferred time
+                  <input type="time" name="time" required />
+                </label>
+
+                <label class="full">Describe the problem
+                  <textarea name="description" rows="4" placeholder="What's happening with your device?" required></textarea>
+                </label>
+
+                <div class="form-actions">
+                  <button type="submit">Confirm booking <span aria-hidden="true">↗</span></button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <!-- ===== MY BOOKINGS ===== -->
+          <section class="dash-section" id="bookings">
+            <div class="dash-section-head">
+              <h2>My bookings</h2>
+              <p>Track the status of every repair you've booked with us.</p>
+            </div>
+
+            <div class="dash-panel">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Booking ID</th>
+                      <th>Device</th>
+                      <th>Issue</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bookingsBody">
+                    <!-- populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== PREMIUM ACCOUNTS ===== -->
+          <section class="dash-section" id="premium">
+            <div class="dash-section-head">
+              <h2>Premium accounts</h2>
+              <p>Licensed software subscriptions, bundled with your repair account.</p>
+            </div>
+
+            <div class="store-grid">
+              <div class="store-card">
+                <span class="store-badge">Popular</span>
+                <h4>Microsoft 365 Personal</h4>
+                <p class="store-price">₱499 <span>/ year</span></p>
+                <p class="store-desc">Word, Excel, PowerPoint and 1TB OneDrive storage on one PC and mobile device.</p>
+                <button type="button" class="buy-btn" data-item="Microsoft 365 Personal">Get now</button>
+              </div>
+              <div class="store-card">
+                <h4>Windows 11 Pro License</h4>
+                <p class="store-price">₱1,200 <span>/ lifetime</span></p>
+                <p class="store-desc">Genuine activation key with free installation when booked with a repair.</p>
+                <button type="button" class="buy-btn" data-item="Windows 11 Pro License">Get now</button>
+              </div>
+              <div class="store-card">
+                <h4>Antivirus Premium</h4>
+                <p class="store-price">₱350 <span>/ year</span></p>
+                <p class="store-desc">Real-time protection, ransomware defense and automatic updates.</p>
+                <button type="button" class="buy-btn" data-item="Antivirus Premium">Get now</button>
+              </div>
+              <div class="store-card">
+                <h4>Cloud Storage 1TB</h4>
+                <p class="store-price">₱299 <span>/ month</span></p>
+                <p class="store-desc">Automatic backup for your files and photos, accessible from any device.</p>
+                <button type="button" class="buy-btn" data-item="Cloud Storage 1TB">Get now</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== SOFTWARE STORE ===== -->
+          <section class="dash-section" id="software">
+            <div class="dash-section-head">
+              <h2>Software store</h2>
+              <p>One-time software services you can add to any booking.</p>
+            </div>
+
+            <div class="store-grid">
+              <div class="store-card">
+                <h4>OS Reinstallation Package</h4>
+                <p class="store-price">₱500</p>
+                <p class="store-desc">Clean install of Windows or your preferred OS with essential drivers.</p>
+                <button type="button" class="buy-btn" data-item="OS Reinstallation Package">Add to booking</button>
+              </div>
+              <div class="store-card">
+                <h4>Software Bundle Pack</h4>
+                <p class="store-price">₱800</p>
+                <p class="store-desc">Includes office suite, PDF tools, media players and essential utilities.</p>
+                <button type="button" class="buy-btn" data-item="Software Bundle Pack">Add to booking</button>
+              </div>
+              <div class="store-card">
+                <h4>MS Office Installation & Activation</h4>
+                <p class="store-price">₱800 - ₱1,200</p>
+                <p class="store-desc">Complete installation and activation of Microsoft Office suite.</p>
+                <button type="button" class="buy-btn" data-item="MS Office Installation & Activation">Add to booking</button>
+              </div>
+              <div class="store-card">
+                <h4>Driver &amp; Optimization Pack</h4>
+                <p class="store-price">₱300</p>
+                <p class="store-desc">Updated drivers, junk cleanup and startup optimization for a faster PC.</p>
+                <button type="button" class="buy-btn" data-item="Driver & Optimization Pack">Add to booking</button>
+              </div>
+              <div class="store-card">
+                <h4>Data Recovery Software</h4>
+                <p class="store-price">₱800</p>
+                <p class="store-desc">Recover deleted or lost files from damaged or corrupted drives.</p>
+                <button type="button" class="buy-btn" data-item="Data Recovery Software">Add to booking</button>
+              </div>
+              <div class="store-card">
+                <h4>PC Tune-Up Suite</h4>
+                <p class="store-price">₱400</p>
+                <p class="store-desc">Full software health check plus performance tuning for slow devices.</p>
+                <button type="button" class="buy-btn" data-item="PC Tune-Up Suite">Add to booking</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== SETTINGS ===== -->
+          <section class="dash-section" id="settings">
+            <div class="dash-section-head">
+              <h2>Account settings</h2>
+              <p>Keep your contact details up to date so we can reach you about your repairs.</p>
+            </div>
+
+            <div class="dash-panel" style="max-width: 640px;">
+              <div class="avatar-lg" id="settingsAvatar">JD</div>
+              <form class="booking-form" id="settingsForm">
+                <label>Full name
+                  <input type="text" name="fullName" id="settingsName" required />
+                </label>
+                <label>Email address
+                  <input type="email" name="email" id="settingsEmail" required />
+                </label>
+                <label>Phone number
+                  <input type="tel" name="phone" placeholder="09xx xxx xxxx" />
+                </label>
+                <label>New password
+                  <input type="password" name="password" placeholder="Leave blank to keep current password" />
+                </label>
+                <div class="form-actions">
+                  <button type="submit">Save changes</button>
+                </div>
+              </form>
+            </div>
+          </section>
+        </main>
+
+        <footer><p>© 2026 Nullified Solutions</p></footer>
+      </div>
+    </div>
+
+    <div class="dash-toast" id="dashToast"><span class="dot"></span><span id="dashToastText">Saved</span></div>
+
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>
