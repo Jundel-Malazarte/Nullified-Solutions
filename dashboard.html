@@ -167,12 +167,14 @@
                   </select>
                 </label>
                 <label>Service type
-                  <select name="serviceType" required>
+                  <select name="serviceType" id="serviceType" required onchange="const homeService = this.value === 'Home Service'; document.getElementById('homeLocationField').hidden = !homeService; document.getElementById('homeLocation').required = homeService; document.getElementById('homeLocation').disabled = !homeService;">
                     <option value="">Select service</option>
                     <option>Walk-in / Drop-off</option>
                     <option>Home Service</option>
-
                   </select>
+                </label>
+                <label id="homeLocationField" class="full" hidden>Specific home service location
+                  <input type="text" name="homeLocation" id="homeLocation" placeholder="Enter your location in Cebu or Cebu City" disabled />
                 </label>
 
                 <label>Preferred date
@@ -237,10 +239,16 @@
                 <button type="button" class="buy-btn" data-item="Microsoft 365 Personal">Get now</button>
               </div>
               <div class="store-card">
-                <h4>Windows 11 Pro License</h4>
-                <p class="store-price">₱1,200 <span>/ lifetime</span></p>
+                <h4>Windows 11 License</h4>
+                <p class="store-price">₱1,500 <span>/ lifetime</span></p>
                 <p class="store-desc">Genuine activation key with free installation when booked with a repair.</p>
                 <button type="button" class="buy-btn" data-item="Windows 11 Pro License">Get now</button>
+              </div>
+              <div class="store-card">
+                <h4>Windows 10 Pro & non-pro License</h4>
+                <p class="store-price">₱1,200 <span>/ lifetime</span></p>
+                <p class="store-desc">Genuine activation key with free installation when booked with a repair.</p>
+                <button type="button" class="buy-btn" data-item="Windows 10 Pro">Get now</button>
               </div>
               <div class="store-card">
                 <h4>Antivirus Premium</h4>
@@ -253,6 +261,20 @@
                 <p class="store-price">₱299 <span>/ month</span></p>
                 <p class="store-desc">Automatic backup for your files and photos, accessible from any device.</p>
                 <button type="button" class="buy-btn" data-item="Cloud Storage 1TB">Get now</button>
+              </div>
+              <div class="store-card">
+                <h4>Canva Pro</h4>
+                <p class="store-price">₱149 <span>/ month</span></p>
+                <p class="store-desc">Access to thousands of design templates, stock photos, and editing tools.</p>
+                <button type="button" class="buy-btn" data-item="Canva Pro">Get now</button>
+              </div>
+              <div class="store-card">
+                <h4>Spotify Premium</h4>
+                <p class="store-price">₱189 <span>/ month</span></p>
+                <p class="store-desc">Unlimited music streaming, ad-free listening, and offline playback. </p>
+                <p class="store-desc">₱99 for Students, 1 account (Requires School Verification)</p>
+                </p>
+                <button type="button" class="buy-btn" data-item="Spotify Premium">Get now</button>
               </div>
             </div>
           </section>
@@ -270,6 +292,18 @@
                 <p class="store-price">₱500</p>
                 <p class="store-desc">Clean install of Windows or your preferred OS with essential drivers.</p>
                 <button type="button" class="buy-btn" data-item="OS Reinstallation Package">Add to booking</button>
+              </div>
+              <div class="store-card">
+                <h4>Re-format & OS Installation Bundle</h4>
+                <p class="store-price">₱1,500 - ₱2,500</p>
+                <p class="store-desc">Recover lost or deleted files from damaged or corrupted drives.</p>
+                <button type="button" class="buy-btn" data-item="Data Recovery Service">Add to booking</button>
+              </div>
+              <div class="store-card">
+                <h4>Data Backup Service</h4>
+                <p class="store-price">₱400</p>
+                <p class="store-desc">Secure backup of your files to an external drive or cloud storage.</p>
+                <button type="button" class="buy-btn" data-item="Data Backup Service">Add to booking</button>
               </div>
               <div class="store-card">
                 <h4>Software Bundle Pack</h4>
