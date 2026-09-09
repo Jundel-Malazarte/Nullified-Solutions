@@ -1,5 +1,5 @@
 .vscode
-.DS_Store
+DS_Store
 .vs_code
 .idea
 .env
