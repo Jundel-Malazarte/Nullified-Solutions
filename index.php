@@ -1,14 +1,6 @@
 <?php
-  // Start the session
-  session_start();
+session_start();
 
-  // Check if the user is logged in
-  if (!isset($_SESSION['user_id'])) {
-    // User is not logged in, redirect to login page
-    header('Location: login.html');
-    exit();
-  }
-  
 ?>
 
 <!doctype html>
@@ -18,16 +10,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nullified Solutions</title>
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="icon" href="images/Nullified_Logo.png" type="image/png" />
+    <link rel="icon" class="icon" href="images/Nullified_Logo.png" type="image/png" style="border:radius: 50%;" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet"/>
   </head>
   <body>
     <header>
-      <a class="brand" href="index.html" aria-label="Nullified Solutions home">
+      <a class="brand" href="index.php" aria-label="Nullified Solutions">
         <div class="logo">
           <img
             src="images/Nullified_Logo.png"
@@ -40,14 +29,14 @@
       <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
 
       <nav id="navMenu">
-        <a href="index.html">Home</a>
-        <a href="services.html">Services</a>
-        <a href="pricing.html">Pricing</a>
-        <a href="index.html#faq">FAQ</a>
-        <a href="contact.html">Contact Us</a>
+        <a href="index.php">Home</a>
+        <a href="services.php">Services</a>
+        <a href="pricing.php">Pricing</a>
+        <a href="index.php#faq">FAQ</a>
+        <a href="contact.php">Contact Us</a>
       </nav>
 
-      <a class="header-cta" href="signup.html">Sign up to book <span aria-hidden="true">↗</span></a>
+      <a class="header-cta" href="signup.php">Sign up to book <span aria-hidden="true">↗</span></a>
     </header>
 
     <main>
@@ -59,7 +48,7 @@
         <p class="hero-copy">Fast, affordable, and reliable repair services for the devices your work and life depend on.</p>
 
         <div class="hero-actions">
-          <button onclick="window.location.href='/login.html'" type="button">Book a repair <span aria-hidden="true">↗</span></button>
+          <button onclick="window.location.href='login.php'" type="button">Book a repair <span aria-hidden="true">↗</span></button>
           <a class="text-link" href="#services">Explore services <span aria-hidden="true">↓</span></a>
         </div>
       </div>
@@ -74,7 +63,7 @@
       </div>
 
       <div class="cards">
-        <a href="services.html" class="service-link">
+        <a href="services.php" class="service-link">
           <div class="card">
             <h3>💻 Laptop Repair</h3>
 
@@ -85,7 +74,7 @@
           </div>
         </a>
 
-        <a href="services.html" class="service-link">
+        <a href="services.php" class="service-link">
           <div class="card">
             <h3>📱 Phone Repair</h3>
 
@@ -96,7 +85,7 @@
           </div>
         </a>
 
-        <a href="services.html" class="service-link">
+        <a href="services.php" class="service-link">
           <div class="card">
             <h3>🛠 Diagnostics</h3>
 

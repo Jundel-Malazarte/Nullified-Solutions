@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up | Nullified Solutions</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="./css/style.css" />
     <link rel="icon" href="images/Nullified_Logo.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
@@ -15,7 +15,7 @@
   </head>
   <body class="account-page">
     <header>
-      <a class="brand" href="index.html" aria-label="Nullified Solutions home">
+      <a class="brand" href="index.php" aria-label="Nullified Solutions home">
         <img src="images/Nullified_Logo.png" alt="Nullified Solutions" />
         <span class="logo">Nullified Solutions</span>
       </a>
@@ -23,14 +23,14 @@
       <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
 
       <nav id="navMenu">
-        <a href="index.html">Home</a>
-        <a href="services.html">Services</a>
-        <a href="pricing.html">Pricing</a>
-        <a href="index.html#faq">FAQ</a>
-        <a href="contact.html">Contact Us</a>
+        <a href="index.php">Home</a>
+        <a href="services.php">Services</a>
+        <a href="pricing.php">Pricing</a>
+        <a href="index.php#faq">FAQ</a>
+        <a href="contact.php">Contact Us</a>
       </nav>
 
-      <a class="header-cta" href="signup.html" aria-current="page">Sign up to book <span aria-hidden="true">↗</span></a>
+      <a class="header-cta" href="signup.php" aria-current="page">Sign up to book <span aria-hidden="true">↗</span></a>
     </header>
 
     <main class="account-main">
@@ -57,7 +57,7 @@
             <button type="submit">Create account <span aria-hidden="true">↗</span></button>
           </form>
           <p class="account-note">By creating an account, you agree to receive appointment updates from Nullified Solutions.</p>
-          <p class="account-switch">Already have an account? <a href="login.html">Log in</a></p>
+          <p class="account-switch">Already have an account? <a href="login.php">Log in</a></p>
         </div>
       </section>
     </main>

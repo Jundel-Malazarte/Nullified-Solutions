@@ -6,7 +6,7 @@
     <title>Dashboard | Nullified Solutions</title>
     <link rel="stylesheet" href="/css/style.css"/>
     <link rel="stylesheet" href="/css/dashboard.css" />
-    <link rel="icon" href="images/Nullified_Logo.png" type="image/png" />
+    <link rel="icon" class="icon" href="images/Nullified_logo.png" type="image/png" style="border-radius: 50%;" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
