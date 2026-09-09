@@ -42,8 +42,10 @@
     overview: "Dashboard",
     book: "Book a Repair",
     bookings: "My Bookings",
+    pricing: "Repair Pricing",
     premium: "Premium Accounts",
     software: "Software Store",
+    payments: "Payments",
     settings: "Account Settings",
   };
 

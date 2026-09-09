@@ -1,3 +1,16 @@
+<?php
+  // Start the session
+  session_start();
+
+  // Check if the user is logged in
+  if (!isset($_SESSION['user_id'])) {
+    // User is not logged in, redirect to login page
+    header('Location: login.html');
+    exit();
+  }
+  
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -46,7 +59,7 @@
         <p class="hero-copy">Fast, affordable, and reliable repair services for the devices your work and life depend on.</p>
 
         <div class="hero-actions">
-          <button onclick="window.location.href='/dashboard.html'" type="button">Book a repair <span aria-hidden="true">↗</span></button>
+          <button onclick="window.location.href='/login.html'" type="button">Book a repair <span aria-hidden="true">↗</span></button>
           <a class="text-link" href="#services">Explore services <span aria-hidden="true">↓</span></a>
         </div>
       </div>
