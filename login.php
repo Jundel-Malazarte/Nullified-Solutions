@@ -105,7 +105,6 @@ if ($requestMethod === 'POST') {
                 <input type="password" id="login-password" name="password" placeholder="Your password" autocomplete="current-password" required />
                 <button type="button" class="password-toggle" data-target="login-password" aria-label="Show password">
                   <i class="fa-regular fa-eye"></i>
-                </i>
                 </button>
               </div>
             </label>

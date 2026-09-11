@@ -34,12 +34,16 @@ function setupPasswordToggle(button) {
 
   syncIconState();
 
-  button.addEventListener("click", function () {
+  button.addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
     field.type = field.type === "password" ? "text" : "password";
     syncIconState();
   });
 }
 
-document.querySelectorAll(".password-toggle").forEach(function (button) {
-  setupPasswordToggle(button);
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".password-toggle").forEach(function (button) {
+    setupPasswordToggle(button);
+  });
 });
