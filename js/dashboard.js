@@ -32,19 +32,45 @@
     if (!titles[target]) return;
 
     sections.forEach(function (section) {
-      section.classList.toggle("active", section.id === target);
+      var isActive = section.id === target;
+      section.classList.toggle("active", isActive);
+      section.style.display = isActive ? "block" : "none";
     });
 
-    navLinks.forEach(function (link) {
-      link.classList.toggle("active", link.dataset.target === target);
-    });
+    if (navLinks && navLinks.length) {
+      navLinks.forEach(function (link) {
+        var isActive = link.dataset.target === target;
+        link.classList.toggle("active", isActive);
+        link.setAttribute("aria-current", isActive ? "page" : "false");
+      });
+    }
 
     if (pageTitle) {
       pageTitle.textContent = titles[target];
     }
 
     closeSidebar();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (window && typeof window.scrollTo === "function") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () {
+      if (location.hash) {
+        var initial = location.hash.replace("#", "");
+        goTo(titles[initial] ? initial : "overview");
+      } else {
+        goTo("overview");
+      }
+    });
+  } else {
+    if (location.hash) {
+      var initial = location.hash.replace("#", "");
+      goTo(titles[initial] ? initial : "overview");
+    } else {
+      goTo("overview");
+    }
   }
 
   navLinks.forEach(function (link) {
@@ -64,7 +90,11 @@
     var initial = location.hash.replace("#", "");
     if (titles[initial]) {
       goTo(initial);
+    } else {
+      goTo("overview");
     }
+  } else {
+    goTo("overview");
   }
 
   if (toggleButton && sidebar && backdrop) {

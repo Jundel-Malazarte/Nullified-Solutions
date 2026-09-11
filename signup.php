@@ -11,7 +11,9 @@ if (!empty($_SESSION['user_id'])) {
 }
 
 $error = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+$requestMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+
+if ($requestMethod === 'POST') {
     $fullName = trim($_POST['name'] ?? '');
     $email = trim(strtolower($_POST['email'] ?? ''));
     $password = $_POST['password'] ?? '';
@@ -19,12 +21,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($fullName === '' || $email === '' || $password === '' || $confirmPassword === '') {
         $error = 'Please complete all fields to create your account.';
-    } elseif (strlen($password) < 8) {
-        $error = 'Password must be at least 8 characters long.';
+    } elseif (!is_valid_full_name($fullName)) {
+        $error = 'Please enter a valid full name using letters and spaces only.';
+    } elseif (!is_valid_email($email)) {
+        $error = 'Please enter a valid email address.';
+    } elseif (!is_strong_password($password)) {
+        $error = 'Password must be at least 8 characters and include uppercase, lowercase, a number, and a symbol.';
     } elseif ($password !== $confirmPassword) {
         $error = 'Passwords do not match. Please try again.';
     } else {
-        $stmt = $conn->prepare('SELECT id FROM users WHERE email = ? LIMIT 1');
+        $stmt = $conn->prepare('SELECT id FROM users WHERE LOWER(email) = LOWER(?) LIMIT 1');
         $stmt->bind_param('s', $email);
         $stmt->execute();
         $existing = $stmt->get_result()->fetch_assoc();
@@ -35,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
             $stmt = $conn->prepare('INSERT INTO users (full_name, email, password_hash, phone, role, is_premium, status) VALUES (?, ?, ?, NULL, "customer", 0, "active")');
-            $stmt->bind_param('ss', $fullName, $email, $passwordHash);
+            $stmt->bind_param('sss', $fullName, $email, $passwordHash);
 
             if ($stmt->execute()) {
                 $userId = $stmt->insert_id;
@@ -112,8 +118,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <form class="account-form" method="post" action="signup.php" id="signupForm">
             <label>Full name<input type="text" name="name" placeholder="Your name" autocomplete="name" value="<?php echo htmlspecialchars($_POST['name'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required /></label>
             <label>Email address<input type="email" name="email" placeholder="you@example.com" autocomplete="email" value="<?php echo htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required /></label>
-            <label>Password<input type="password" name="password" placeholder="At least 8 characters" minlength="8" autocomplete="new-password" required /></label>
-            <label>Confirm password<input type="password" name="confirm-password" placeholder="Re-enter your password" minlength="8" autocomplete="new-password" required /></label>
+
+            <label>Password
+              <div class="password-wrap">
+                <input type="password" id="password" name="password" placeholder="At least 8 characters" minlength="8" autocomplete="new-password" required />
+                <button type="button" class="password-toggle" data-target="password" aria-label="Show password">👁</button>
+              </div>
+            </label>
+
+            <label>Confirm password
+              <div class="password-wrap">
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Re-enter your password" minlength="8" autocomplete="new-password" required />
+                <button type="button" class="password-toggle" data-target="confirm-password" aria-label="Show password">👁</button>
+              </div>
+            </label>
+
             <button type="submit">Create account <span aria-hidden="true">↗</span></button>
           </form>
 

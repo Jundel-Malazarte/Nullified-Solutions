@@ -23,7 +23,9 @@ if (!$user) {
 }
 
 $message = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_submit'])) {
+$requestMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+
+if ($requestMethod === 'POST' && isset($_POST['booking_submit'])) {
     $deviceType = trim($_POST['device_type'] ?? '');
     $deviceBrand = trim($_POST['device_brand'] ?? '');
     $deviceModel = trim($_POST['device_model'] ?? '');
@@ -78,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_submit'])) {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['settings_submit'])) {
+if ($requestMethod === 'POST' && isset($_POST['settings_submit'])) {
     $fullName = trim($_POST['full_name'] ?? '');
     $phone = trim($_POST['phone'] ?? '');
     $password = $_POST['password'] ?? '';
@@ -107,16 +109,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['settings_submit'])) {
 
     if (!empty($updateParts)) {
         $sql = 'UPDATE users SET ' . implode(', ', $updateParts) . ' WHERE id = ?';
-        $bindValues = [$types . 'i', $values, $userId];
+        $params = $values;
+        $params[] = $userId;
 
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param($bindValues[0], ...array_merge($bindValues[1], [$userId]));
-        $stmt->execute();
-        $stmt->close();
+        $refs = [];
+        foreach ($params as $key => $value) {
+            $refs[$key] = &$params[$key];
+        }
+        array_unshift($refs, $types . 'i');
+
+        call_user_func_array([$stmt, 'bind_param'], $refs);
     }
 
     $user = get_user_by_id($conn, $userId);
     $_SESSION['user_name'] = $user['full_name'];
+    $_SESSION['user_email'] = $user['email'];
     $message = 'Account settings updated successfully.';
 }
 
@@ -130,8 +138,12 @@ $payments = get_user_payments($conn, $userId);
 $nextDate = !empty($stats['next_date']) ? date('M j', strtotime($stats['next_date'])) : 'TBD';
 $nextDevice = !empty($stats['next_device']) ? $stats['next_device'] : 'No booking';
 $nextService = !empty($stats['next_service']) ? $stats['next_service'] : 'No service';
-$initials = strtoupper(substr($user['full_name'], 0, 1));
-$avatar = !empty($user['full_name']) ? strtoupper(substr($user['full_name'], 0, 2)) : 'NS';
+$displayName = $_SESSION['user_name'] ?? ($user['full_name'] ?? 'User');
+$displayEmail = $_SESSION['user_email'] ?? ($user['email'] ?? 'user@example.com');
+$displayName = trim((string) $displayName) !== '' ? $displayName : 'User';
+$displayEmail = trim((string) $displayEmail) !== '' ? $displayEmail : 'user@example.com';
+$initials = strtoupper(substr($displayName, 0, 1));
+$avatar = !empty($displayName) ? strtoupper(substr($displayName, 0, 2)) : 'NS';
 ?>
 
 <!doctype html>
@@ -188,10 +200,10 @@ $avatar = !empty($user['full_name']) ? strtoupper(substr($user['full_name'], 0, 
 
           <div class="dash-user">
             <div class="dash-user-info">
-              <span class="dash-user-name" id="userName"><?php echo htmlspecialchars($user['full_name'], ENT_QUOTES, 'UTF-8'); ?></span>
-              <span class="dash-user-email" id="userEmail"><?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?></span>
+              <span class="dash-user-name" id="userName"><?php echo htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8'); ?></span>
+              <span class="dash-user-email" id="userEmail"><?php echo htmlspecialchars($displayEmail, ENT_QUOTES, 'UTF-8'); ?></span>
             </div>
-            <div class="dash-avatar" id="userAvatar"><?php echo htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8'); ?></div>
+            <div class="dash-avatar" id="userAvatar"><?php echo htmlspecialchars($initials, ENT_QUOTES, 'UTF-8'); ?></div>
             <a class="dash-logout" href="dashboard.php?logout=1">Log out</a>
           </div>
         </header>
@@ -479,10 +491,10 @@ $avatar = !empty($user['full_name']) ? strtoupper(substr($user['full_name'], 0, 
               <div class="avatar-lg" id="settingsAvatar"><?php echo htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8'); ?></div>
               <form class="booking-form" method="post" action="dashboard.php#settings">
                 <label>Full name
-                  <input type="text" name="full_name" value="<?php echo htmlspecialchars($user['full_name'], ENT_QUOTES, 'UTF-8'); ?>" required />
+                  <input type="text" name="full_name" value="<?php echo htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8'); ?>" required />
                 </label>
                 <label>Email address
-                  <input type="email" value="<?php echo htmlspecialchars($user['email'], ENT_QUOTES, 'UTF-8'); ?>" disabled />
+                  <input type="email" value="<?php echo htmlspecialchars($displayEmail, ENT_QUOTES, 'UTF-8'); ?>" disabled />
                 </label>
                 <label>Phone number
                   <input type="tel" name="phone" value="<?php echo htmlspecialchars($user['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" placeholder="09xx xxx xxxx" />

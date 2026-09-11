@@ -11,14 +11,18 @@ if (!empty($_SESSION['user_id'])) {
 }
 
 $error = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+$requestMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+
+if ($requestMethod === 'POST') {
     $email = trim(strtolower($_POST['email'] ?? ''));
     $password = $_POST['password'] ?? '';
 
     if ($email === '' || $password === '') {
         $error = 'Email and password are required.';
+    } elseif (!is_valid_email($email)) {
+        $error = 'Please enter a valid email address.';
     } else {
-        $stmt = $conn->prepare('SELECT id, full_name, email, password_hash, status FROM users WHERE email = ? LIMIT 1');
+        $stmt = $conn->prepare('SELECT id, full_name, email, password_hash, status FROM users WHERE LOWER(email) = LOWER(?) LIMIT 1');
         $stmt->bind_param('s', $email);
         $stmt->execute();
         $user = $stmt->get_result()->fetch_assoc();
@@ -94,7 +98,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           <form class="account-form" method="post" action="login.php" id="loginForm">
             <label>Email address<input type="email" name="email" placeholder="you@example.com" autocomplete="email" value="<?php echo htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required /></label>
-            <label>Password<input type="password" name="password" placeholder="Your password" autocomplete="current-password" required /></label>
+
+            <label>Password
+              <div class="password-wrap">
+                <input type="password" id="login-password" name="password" placeholder="Your password" autocomplete="current-password" required />
+                <button type="button" class="password-toggle" data-target="login-password" aria-label="Show password">👁</button>
+              </div>
+            </label>
+
             <button type="submit">Log in <span aria-hidden="true">↗</span></button>
           </form>
           <p class="account-switch">New to Nullified Solutions? <a href="signup.php">Create an account</a></p>

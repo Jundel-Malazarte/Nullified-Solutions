@@ -16,6 +16,28 @@ function require_login()
     }
 }
 
+function is_valid_email($email)
+{
+    return is_string($email) && filter_var(trim($email), FILTER_VALIDATE_EMAIL) !== false;
+}
+
+function is_valid_full_name($fullName)
+{
+    $value = trim((string) $fullName);
+
+    if ($value === '' || strlen($value) < 2) {
+        return false;
+    }
+
+    return preg_match('/^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[\'\-. ][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/u', $value) === 1;
+}
+
+function is_strong_password($password)
+{
+    return is_string($password)
+        && preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/', $password) === 1;
+}
+
 function logout_user()
 {
     $_SESSION = [];

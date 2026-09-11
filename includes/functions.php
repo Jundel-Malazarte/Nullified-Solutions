@@ -57,7 +57,7 @@ function get_user_stats($conn, $userId)
          WHERE user_id = ?'
     );
 
-    $stmt->bind_param('iiiiii', $userId, $userId, $userId, $userId, $userId, $userId);
+    $stmt->bind_param('iiiii', $userId, $userId, $userId, $userId, $userId);
     $stmt->execute();
     $stats = $stmt->get_result()->fetch_assoc();
     $stmt->close();

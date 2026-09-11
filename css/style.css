@@ -920,9 +920,59 @@ footer { background: #06142f; color: rgba(255, 255, 255, 0.64); }
   font: inherit;
 }
 
+.password-wrap {
+  position: relative;
+}
+
+.password-wrap input {
+  padding-right: 46px;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1;
+  box-shadow: none;
+}
+
+.password-toggle:hover {
+  background: transparent;
+  color: var(--blue);
+}
+
 .account-form input:focus {
   border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.12);
+}
+
+.form-message {
+  margin: 18px 0 8px;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.form-message.error {
+  border: 1px solid rgba(220, 38, 38, 0.22);
+  background: rgba(254, 226, 226, 0.85);
+  color: #991b1b;
+}
+
+.form-message.success {
+  border: 1px solid rgba(22, 163, 74, 0.22);
+  background: rgba(220, 252, 231, 0.9);
+  color: #166534;
 }
 
 .account-google {
