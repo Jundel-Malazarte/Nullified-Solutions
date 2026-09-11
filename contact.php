@@ -53,9 +53,9 @@
 					<p class="contact-intro">Choose the easiest way to connect with Nullified Solutions Tech Repair.</p>
 
 					<div class="contact-list">
-						<a class="contact-detail" href="tel:+639641186918">
+						<a class="contact-detail" href="tel:+639912787073">
 							<span class="contact-icon" aria-hidden="true">☎</span>
-							<span><small>Mobile number</small><strong>0964 118 6918</strong></span>
+							<span><small>Mobile number</small><strong>0991 278 7073</strong></span>
 						</a>
 						<a class="contact-detail" href="mailto:nullifiedsolutions@gmail.com">
 							<span class="contact-icon" aria-hidden="true">@</span>
