@@ -1,3 +1,62 @@
+<?php
+require_once __DIR__ . '/connection.php';
+require_once __DIR__ . '/includes/auth.php';
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!empty($_SESSION['user_id'])) {
+    redirect_to('dashboard.php');
+}
+
+$error = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $fullName = trim($_POST['name'] ?? '');
+    $email = trim(strtolower($_POST['email'] ?? ''));
+    $password = $_POST['password'] ?? '';
+    $confirmPassword = $_POST['confirm-password'] ?? '';
+
+    if ($fullName === '' || $email === '' || $password === '' || $confirmPassword === '') {
+        $error = 'Please complete all fields to create your account.';
+    } elseif (strlen($password) < 8) {
+        $error = 'Password must be at least 8 characters long.';
+    } elseif ($password !== $confirmPassword) {
+        $error = 'Passwords do not match. Please try again.';
+    } else {
+        $stmt = $conn->prepare('SELECT id FROM users WHERE email = ? LIMIT 1');
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $existing = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        if ($existing) {
+            $error = 'An account already exists for that email address.';
+        } else {
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+            $stmt = $conn->prepare('INSERT INTO users (full_name, email, password_hash, phone, role, is_premium, status) VALUES (?, ?, ?, NULL, "customer", 0, "active")');
+            $stmt->bind_param('ss', $fullName, $email, $passwordHash);
+
+            if ($stmt->execute()) {
+                $userId = $stmt->insert_id;
+                $stmt->close();
+
+                $_SESSION['user_id'] = (int) $userId;
+                $_SESSION['user_name'] = $fullName;
+                $_SESSION['user_email'] = $email;
+
+                redirect_to('dashboard.php');
+            }
+
+            $error = 'We could not create your account right now. Please try again.';
+            if (isset($stmt)) {
+                $stmt->close();
+            }
+        }
+    }
+}
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -7,11 +66,8 @@
     <link rel="stylesheet" href="./css/style.css" />
     <link rel="icon" href="images/Nullified_Logo.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet" />
   </head>
   <body class="account-page">
     <header>
@@ -46,16 +102,21 @@
           <h2>Create your account</h2>
           <p>Start with the basics. You can update your details anytime.</p>
 
-          
-<button class="account-google" type="button"><span aria-hidden="true">G</span> Continue with Google</button>
+          <?php if ($error !== ''): ?>
+            <div class="form-message error"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
+          <?php endif; ?>
+
+          <button class="account-google" type="button"><span aria-hidden="true">G</span> Continue with Google</button>
           <div class="account-divider"><span>or use your email</span></div>
-          <form class="account-form" id="signupForm">
-            <label>Full name<input type="text" name="name" placeholder="Your name" autocomplete="name" required /></label>
-            <label>Email address<input type="email" name="email" placeholder="you@example.com" autocomplete="email" required /></label>
+
+          <form class="account-form" method="post" action="signup.php" id="signupForm">
+            <label>Full name<input type="text" name="name" placeholder="Your name" autocomplete="name" value="<?php echo htmlspecialchars($_POST['name'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required /></label>
+            <label>Email address<input type="email" name="email" placeholder="you@example.com" autocomplete="email" value="<?php echo htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required /></label>
             <label>Password<input type="password" name="password" placeholder="At least 8 characters" minlength="8" autocomplete="new-password" required /></label>
             <label>Confirm password<input type="password" name="confirm-password" placeholder="Re-enter your password" minlength="8" autocomplete="new-password" required /></label>
             <button type="submit">Create account <span aria-hidden="true">↗</span></button>
           </form>
+
           <p class="account-note">By creating an account, you agree to receive appointment updates from Nullified Solutions.</p>
           <p class="account-switch">Already have an account? <a href="login.php">Log in</a></p>
         </div>
