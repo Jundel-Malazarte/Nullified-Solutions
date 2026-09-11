@@ -86,6 +86,13 @@
     });
   });
 
+  var bookingForm = document.querySelector(".booking-form");
+  if (bookingForm) {
+    bookingForm.addEventListener("submit", function () {
+      alert("Thank you! Our technician will contact you shortly.");
+    });
+  }
+
   if (location.hash) {
     var initial = location.hash.replace("#", "");
     if (titles[initial]) {
