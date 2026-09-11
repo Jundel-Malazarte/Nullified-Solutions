@@ -922,9 +922,12 @@ footer { background: #06142f; color: rgba(255, 255, 255, 0.64); }
 
 .password-wrap {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .password-wrap input {
+  padding-left: 14px;
   padding-right: 46px;
 }
 
@@ -933,20 +936,31 @@ footer { background: #06142f; color: rgba(255, 255, 255, 0.64); }
   top: 50%;
   right: 12px;
   transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
   margin: 0;
   padding: 0;
   border: 0;
-  background: transparent;
+  border-radius: 50%;
+  background: rgba(100, 116, 139, 0.08);
   color: #64748b;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1;
   box-shadow: none;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.password-toggle i {
+  display: block;
+  pointer-events: none;
 }
 
 .password-toggle:hover {
-  background: transparent;
+  background: rgba(37, 99, 235, 0.1);
   color: var(--blue);
 }
 

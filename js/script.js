@@ -16,18 +16,30 @@ if (menu && toggle) {
   });
 }
 
-document.querySelectorAll(".password-toggle").forEach(function (toggleButton) {
-  toggleButton.addEventListener("click", function () {
-    const targetId = toggleButton.dataset.target;
-    const field = document.getElementById(targetId);
+function setupPasswordToggle(button) {
+  const targetId = button.dataset.target;
+  const field = document.getElementById(targetId);
+  const icon = button.querySelector("i");
 
-    if (!field) {
-      return;
-    }
+  if (!field || !button || !icon) {
+    return;
+  }
 
-    const isHidden = field.type === "password";
-    field.type = isHidden ? "text" : "password";
-    toggleButton.textContent = isHidden ? "🙈" : "👁";
-    toggleButton.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+  const syncIconState = function () {
+    const isPasswordHidden = field.type === "password";
+    icon.classList.remove("fa-eye", "fa-eye-slash");
+    icon.classList.add(isPasswordHidden ? "fa-eye" : "fa-eye-slash");
+    button.setAttribute("aria-label", isPasswordHidden ? "Show password" : "Hide password");
+  };
+
+  syncIconState();
+
+  button.addEventListener("click", function () {
+    field.type = field.type === "password" ? "text" : "password";
+    syncIconState();
   });
+}
+
+document.querySelectorAll(".password-toggle").forEach(function (button) {
+  setupPasswordToggle(button);
 });

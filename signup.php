@@ -69,11 +69,12 @@ if ($requestMethod === 'POST') {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up | Nullified Solutions</title>
-    <link rel="stylesheet" href="./css/style.css" />
     <link rel="icon" href="images/Nullified_Logo.png" type="image/png" />
+    <link rel="stylesheet" href="./css/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
   <body class="account-page">
     <header>
@@ -122,14 +123,18 @@ if ($requestMethod === 'POST') {
             <label>Password
               <div class="password-wrap">
                 <input type="password" id="password" name="password" placeholder="At least 8 characters" minlength="8" autocomplete="new-password" required />
-                <button type="button" class="password-toggle" data-target="password" aria-label="Show password">👁</button>
+                <button type="button" class="password-toggle" data-target="password" aria-label="Show password">
+                  <i class="fa-regular fa-eye"></i>
+                </button>
               </div>
             </label>
 
             <label>Confirm password
               <div class="password-wrap">
                 <input type="password" id="confirm-password" name="confirm-password" placeholder="Re-enter your password" minlength="8" autocomplete="new-password" required />
-                <button type="button" class="password-toggle" data-target="confirm-password" aria-label="Show password">👁</button>
+                <button type="button" class="password-toggle" data-target="confirm-password" aria-label="Show password">
+                  <i class="fa-regular fa-eye"></i>
+                </button>
               </div>
             </label>
 
