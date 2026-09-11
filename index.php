@@ -17,7 +17,7 @@ $pricingGroups = get_pricing_groups($conn);
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet"/>
   </head>
   <body>
-    <header>
+    <header class="site-header">
       <a class="brand" href="index.php" aria-label="Nullified Solutions">
         <div class="logo">
           <img
@@ -44,8 +44,10 @@ $pricingGroups = get_pricing_groups($conn);
     <main>
     <section class="hero">
       <div class="overlay">
-        <p class="eyebrow">TECH REPAIR, WITHOUT THE RUNAROUND</p>
-        <h1>Computer & Phone Repair</h1>
+        <p class="eyebrow">NULLIFIED SOLUTIONS TECH REPAIR</p>
+        <h1 class="typing-wrap">
+          <span class="typing-text" data-text="Computer & Phone Repair | Laptop & Tablet Repair | Fast Tech Repair |"></span>
+        </h1>
 
         <p class="hero-copy">Fast, affordable, and reliable repair services for the devices your work and life depend on.</p>
 

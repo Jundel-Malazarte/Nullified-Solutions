@@ -627,6 +627,26 @@ header {
   box-shadow: 0 8px 30px rgba(8, 34, 75, 0.18);
 }
 
+.site-header {
+  opacity: 0;
+  transform: translateY(-16px);
+}
+
+.site-header.is-ready {
+  animation: headerReveal 0.7s ease forwards;
+}
+
+@keyframes headerReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -747,6 +767,45 @@ nav a:hover::after { transform: scaleX(1); }
   font-size: clamp(2.7rem, 6vw, 5.7rem);
   line-height: 1.05;
   letter-spacing: 0;
+}
+
+.typing-wrap {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.15em;
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+.typing-text {
+  display: inline-block;
+  min-width: 10ch;
+  max-width: 100%;
+  color: #fff;
+  white-space: nowrap;
+  overflow: visible;
+  padding-right: 0;
+}
+
+.typing-text::after {
+  content: "|";
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--cyan);
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: baseline;
+  animation: pulse-cursor 0.8s steps(1) infinite;
+}
+
+@keyframes typing-blink {
+  0%, 50% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes pulse-cursor {
+  0%, 50% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
 .hero-copy {
