@@ -16,6 +16,13 @@ function require_login()
     }
 }
 
+function require_admin()
+{
+    if (empty($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+        redirect_to('../dashboard.php');
+    }
+}
+
 function is_valid_email($email)
 {
     return is_string($email) && filter_var(trim($email), FILTER_VALIDATE_EMAIL) !== false;

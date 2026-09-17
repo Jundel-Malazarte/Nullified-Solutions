@@ -22,7 +22,7 @@ if ($requestMethod === 'POST') {
     } elseif (!is_valid_email($email)) {
         $error = 'Please enter a valid email address.';
     } else {
-        $stmt = $conn->prepare('SELECT id, full_name, email, password_hash, status FROM users WHERE LOWER(email) = LOWER(?) LIMIT 1');
+        $stmt = $conn->prepare('SELECT id, full_name, email, password_hash, role, status FROM users WHERE LOWER(email) = LOWER(?) LIMIT 1');
         $stmt->bind_param('s', $email);
         $stmt->execute();
         $user = $stmt->get_result()->fetch_assoc();
@@ -35,6 +35,12 @@ if ($requestMethod === 'POST') {
                 $_SESSION['user_id'] = (int) $user['id'];
                 $_SESSION['user_name'] = $user['full_name'];
                 $_SESSION['user_email'] = $user['email'];
+                $_SESSION['user_role'] = $user['role'] ?? 'customer';
+
+                if ($_SESSION['user_role'] === 'admin') {
+                    redirect_to('admin/admin_dashboard.php');
+                }
+
                 redirect_to('dashboard.php');
             }
         } else {
