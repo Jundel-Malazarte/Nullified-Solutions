@@ -11,7 +11,7 @@ $pricingGroups = get_pricing_groups($conn);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nullified Solutions</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style.css?v=20260920" />
     <link rel="icon" class="icon" href="images/Nullified_Logo.png" type="image/png" style="border:radius: 50%;" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet"/>
