@@ -6,10 +6,13 @@
 
 html {
   scroll-behavior: smooth;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 body {
-  overflow-x: hidden;
+  max-width: 100%;
+  overflow-x: clip;
   font-family: Poppins, sans-serif;
 }
 
@@ -18,6 +21,10 @@ img {
   height: auto;
   display: block;
   border-radius: 8px;
+}
+
+img, svg, video {
+  max-width: 100%;
 }
 
 section {
@@ -137,13 +144,17 @@ button:hover {
 
 .cards {
   display: grid;
-
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-
   gap: 25px;
 }
 
 .card {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   padding: 30px;
 }
 
@@ -246,13 +257,17 @@ footer {
 
 .pricing-grid {
   display: grid;
-
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-
   gap: 25px;
 }
 
 .price-card {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   background: #fff;
   border: 2px solid #2563eb;
   border-radius: 15px;
@@ -734,10 +749,10 @@ nav a:hover::after { transform: scaleX(1); }
 
 .hero::after {
   position: absolute;
-  right: 8%;
+  right: clamp(-30px, 3vw, 8%);
   bottom: -125px;
-  width: 380px;
-  height: 380px;
+  width: min(380px, 70vw);
+  height: min(380px, 70vw);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   box-shadow: 0 0 0 35px rgba(255, 255, 255, 0.04), 0 0 0 70px rgba(255, 255, 255, 0.03);
@@ -894,11 +909,64 @@ footer { background: #06142f; color: rgba(255, 255, 255, 0.64); }
 }
 
 @media (max-width: 768px) {
-  .hero { min-height: 590px; padding-top: 70px; }
+  .hero {
+    min-height: 590px;
+    padding: 60px 18px 92px;
+  }
+
+  .hero::after {
+    right: -30px;
+    bottom: -90px;
+    width: min(230px, 62vw);
+    height: min(230px, 62vw);
+  }
+
+  .overlay {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .typing-wrap {
+    display: block;
+    white-space: normal;
+  }
+
+  .typing-text {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
   .hero-note { right: 20px; }
   .hero-actions { align-items: flex-start; flex-direction: column; gap: 18px; }
   .contact form { grid-template-columns: 1fr; }
   .contact textarea, .contact button { grid-column: auto; }
+
+  .services,
+  .pricing,
+  .faq,
+  .contact,
+  .about {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .cards,
+  .pricing-grid,
+  .features {
+    grid-template-columns: 1fr !important;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .card,
+  .price-card,
+  .feature-item,
+  .faq-item {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
 
   .header-cta {
     order: 2;
