@@ -104,7 +104,9 @@ if ($requestMethod === 'POST') {
           <div class="account-divider"><span>or use your email</span></div>
 
           <form class="account-form" method="post" action="login.php" id="loginForm">
-            <label>Email address<input type="email" name="email" placeholder="you@example.com" autocomplete="email" value="<?php echo htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required /></label>
+            <label>Email address
+              <input type="email" name="email" placeholder="you@example.com" autocomplete="email" value="<?php echo htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required />
+            </label>
 
             <label>Password
               <div class="password-wrap">

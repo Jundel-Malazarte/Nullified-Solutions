@@ -117,8 +117,12 @@ if ($requestMethod === 'POST') {
           <div class="account-divider"><span>or use your email</span></div>
 
           <form class="account-form" method="post" action="signup.php" id="signupForm">
-            <label>Full name<input type="text" name="name" placeholder="Your name" autocomplete="name" value="<?php echo htmlspecialchars($_POST['name'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required /></label>
-            <label>Email address<input type="email" name="email" placeholder="you@example.com" autocomplete="email" value="<?php echo htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required /></label>
+            <label>Full name
+              <input type="text" name="name" placeholder="Your name" autocomplete="name" value="<?php echo htmlspecialchars($_POST['name'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required />
+            </label>
+            <label>Email address
+              <input type="email" name="email" placeholder="you@example.com" autocomplete="email" value="<?php echo htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required />
+            </label>
 
             <label>Password
               <div class="password-wrap">
