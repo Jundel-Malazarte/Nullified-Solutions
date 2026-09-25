@@ -454,30 +454,32 @@ $avatar = !empty($displayName) ? strtoupper(substr($displayName, 0, 2)) : 'NS';
             </div>
 
             <div class="dash-panel">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Plan</th>
-                    <th>Price</th>
-                    <th>Status</th>
-                    <th>Expires</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php if (empty($payments)): ?>
-                    <tr><td colspan="4">No payment records yet.</td></tr>
-                  <?php else: ?>
-                    <?php foreach ($payments as $payment): ?>
-                      <tr>
-                        <td><?php echo htmlspecialchars($payment['plan_name'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td>₱<?php echo number_format((float) $payment['monthly_price'], 0, '.', ','); ?></td>
-                        <td><?php echo htmlspecialchars($payment['status'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars(date('M j, Y', strtotime($payment['expires_at'])), ENT_QUOTES, 'UTF-8'); ?></td>
-                      </tr>
-                    <?php endforeach; ?>
-                  <?php endif; ?>
-                </tbody>
-              </table>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Plan</th>
+                      <th>Price</th>
+                      <th>Status</th>
+                      <th>Expires</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php if (empty($payments)): ?>
+                      <tr><td colspan="4">No payment records yet.</td></tr>
+                    <?php else: ?>
+                      <?php foreach ($payments as $payment): ?>
+                        <tr>
+                          <td><?php echo htmlspecialchars($payment['plan_name'], ENT_QUOTES, 'UTF-8'); ?></td>
+                          <td>₱<?php echo number_format((float) $payment['monthly_price'], 0, '.', ','); ?></td>
+                          <td><?php echo htmlspecialchars($payment['status'], ENT_QUOTES, 'UTF-8'); ?></td>
+                          <td><?php echo htmlspecialchars(date('M j, Y', strtotime($payment['expires_at'])), ENT_QUOTES, 'UTF-8'); ?></td>
+                        </tr>
+                      <?php endforeach; ?>
+                    <?php endif; ?>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </section>
 
