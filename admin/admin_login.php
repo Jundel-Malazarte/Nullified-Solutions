@@ -81,7 +81,7 @@ if ($requestMethod === 'POST') {
         <a href="../contact.php">Contact Us</a>
       </nav>
 
-      <a class="header-cta" href="signup_admin.php">Create admin account <span aria-hidden="true">↗</span></a>
+      <a class="header-cta" href="reset_admin.php">Reset admin account <span aria-hidden="true">↗</span></a>
     </header>
 
     <main class="account-main">
@@ -120,7 +120,7 @@ if ($requestMethod === 'POST') {
 
             <button type="submit">Log in <span aria-hidden="true">↗</span></button>
           </form>
-          <p class="account-switch">Need an admin account? <a href="signup_admin.php">Create one</a></p>
+          <p class="account-switch">Reset admin account? <a href="reset_admin.php">Reset password</a></p>
         </div>
       </section>
     </main>

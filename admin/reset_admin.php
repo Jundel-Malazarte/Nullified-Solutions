@@ -14,18 +14,16 @@ if (!empty($_SESSION['user_id'])) {
 }
 
 $error = '';
+$success = '';
 $requestMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 if ($requestMethod === 'POST') {
-    $fullName = trim($_POST['name'] ?? '');
     $email = trim(strtolower($_POST['email'] ?? ''));
     $password = $_POST['password'] ?? '';
     $confirmPassword = $_POST['confirm-password'] ?? '';
 
-    if ($fullName === '' || $email === '' || $password === '' || $confirmPassword === '') {
-        $error = 'Please complete all fields to create the admin account.';
-    } elseif (!is_valid_full_name($fullName)) {
-        $error = 'Please enter a valid full name using letters and spaces only.';
+    if ($email === '' || $password === '' || $confirmPassword === '') {
+        $error = 'Please complete all fields to reset the admin password.';
     } elseif (!is_valid_email($email)) {
         $error = 'Please enter a valid email address.';
     } elseif (!is_strong_password($password)) {
@@ -33,34 +31,29 @@ if ($requestMethod === 'POST') {
     } elseif ($password !== $confirmPassword) {
         $error = 'Passwords do not match. Please try again.';
     } else {
-        $stmt = $conn->prepare('SELECT id FROM users WHERE LOWER(email) = LOWER(?) LIMIT 1');
+        $stmt = $conn->prepare('SELECT id, role FROM users WHERE LOWER(email) = LOWER(?) LIMIT 1');
         $stmt->bind_param('s', $email);
         $stmt->execute();
-        $existing = $stmt->get_result()->fetch_assoc();
+        $user = $stmt->get_result()->fetch_assoc();
         $stmt->close();
 
-        if ($existing) {
-            $error = 'An account already exists for that email address.';
+        if (!$user) {
+            $error = 'No account found with that email address.';
+        } elseif (($user['role'] ?? 'customer') !== 'admin') {
+            $error = 'This account does not have admin access.';
         } else {
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $conn->prepare('INSERT INTO users (full_name, email, password_hash, phone, role, is_premium, status) VALUES (?, ?, ?, NULL, "admin", 0, "active")');
-            $stmt->bind_param('ss', $fullName, $email, $passwordHash);
+            $stmt = $conn->prepare('UPDATE users SET password_hash = ? WHERE id = ?');
+            $stmt->bind_param('si', $passwordHash, $user['id']);
 
             if ($stmt->execute()) {
-                $userId = $stmt->insert_id;
                 $stmt->close();
-
-                $_SESSION['user_id'] = (int) $userId;
-                $_SESSION['user_name'] = $fullName;
-                $_SESSION['user_email'] = $email;
-                $_SESSION['user_role'] = 'admin';
-
-                redirect_to('admin_dashboard.php');
-            }
-
-            $error = 'We could not create the admin account right now. Please try again.';
-            if (isset($stmt)) {
-                $stmt->close();
+                $success = 'Admin password updated successfully. You can now log in with your new password.';
+            } else {
+                $error = 'We could not update the password right now. Please try again.';
+                if (isset($stmt)) {
+                    $stmt->close();
+                }
             }
         }
     }
@@ -72,7 +65,7 @@ if ($requestMethod === 'POST') {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Sign Up | Nullified Solutions</title>
+    <title>Reset Admin Password | Nullified Solutions</title>
     <link rel="icon" href="../images/Nullified_Logo.png" type="image/png" />
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -101,34 +94,32 @@ if ($requestMethod === 'POST') {
     </header>
 
     <main class="account-main">
-      <section class="account-shell" aria-labelledby="signup-title">
+      <section class="account-shell" aria-labelledby="reset-title">
         <div class="account-intro">
           <p class="eyebrow">ADMIN PORTAL</p>
-          <h1 id="signup-title">Create a secure admin account.</h1>
-          <p>Register a new admin user with a hashed password so the account works with the same encrypted authentication flow as the app.</p>
+          <h1 id="reset-title">Reset your admin password.</h1>
+          <p>Update the password for an existing admin account. Enter your admin email and create a new secure password.</p>
         </div>
 
         <div class="account-form-wrap">
-          <p class="eyebrow">JOIN NULLIFIED SOLUTIONS ADMIN</p>
-          <h2>Create admin account</h2>
-          <p>Start with the basics. The password will be stored securely as a hash.</p>
+          <p class="eyebrow">NULLIFIED SOLUTIONS ADMIN</p>
+          <h2>Reset admin password</h2>
+          <p>Enter your admin email and create a new password. The password will be stored securely as a hash.</p>
 
           <?php if ($error !== ''): ?>
             <div class="form-message error"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></div>
           <?php endif; ?>
 
-          <button class="account-google" type="button"><span aria-hidden="true">G</span> Continue with Google</button>
-          <div class="account-divider"><span>or use your email</span></div>
+          <?php if ($success !== ''): ?>
+            <div class="form-message success"><?php echo htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></div>
+          <?php endif; ?>
 
-          <form class="account-form" method="post" action="signup_admin.php" id="signupForm">
-            <label>Full name
-              <input type="text" name="name" placeholder="Admin name" autocomplete="name" value="<?php echo htmlspecialchars($_POST['name'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required />
-            </label>
-            <label>Email address
+          <form class="account-form" method="post" action="reset_admin.php" id="resetForm">
+            <label>Admin email address
               <input type="email" name="email" placeholder="admin@example.com" autocomplete="email" value="<?php echo htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required />
             </label>
 
-            <label>Password
+            <label>New password
               <div class="password-wrap">
                 <input type="password" id="password" name="password" placeholder="At least 8 characters" minlength="8" autocomplete="new-password" required />
                 <button type="button" class="password-toggle" data-target="password" aria-label="Show password">
@@ -137,20 +128,19 @@ if ($requestMethod === 'POST') {
               </div>
             </label>
 
-            <label>Confirm password
+            <label>Confirm new password
               <div class="password-wrap">
-                <input type="password" id="confirm-password" name="confirm-password" placeholder="Re-enter your password" minlength="8" autocomplete="new-password" required />
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Re-enter your new password" minlength="8" autocomplete="new-password" required />
                 <button type="button" class="password-toggle" data-target="confirm-password" aria-label="Show password">
                   <i class="fa-regular fa-eye"></i>
                 </button>
               </div>
             </label>
 
-            <button type="submit">Create admin account <span aria-hidden="true">↗</span></button>
+            <button type="submit">Update admin password <span aria-hidden="true">↗</span></button>
           </form>
 
-          <p class="account-note">By creating an admin account, you agree to the administrative access requirements for Nullified Solutions.</p>
-          <p class="account-switch">Already have an admin account? <a href="admin_login.php">Log in</a></p>
+          <p class="account-switch">Remember your password? <a href="admin_login.php">Log in</a></p>
         </div>
       </section>
     </main>
