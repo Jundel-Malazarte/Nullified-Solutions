@@ -1,0 +1,29 @@
+# Build artifacts
+.build-info.json
+node_modules/
+
+# Environment and config
+.env
+
+# Version control
+.git/
+.gitignore
+
+# IDE and tools
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Backups
+backup/
+*.bak
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,21 @@
+{
+  "name": "nullified-solutions-php",
+  "version": "1.0.0",
+  "description": "Nullified Solutions Tech Repair - PHP Web Application",
+  "main": "index.php",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "serve": "php -S 0.0.0.0:8000",
+    "build": "node build.js",
+    "lint": "node build.js --lint-only",
+    "share": "npx localtunnel --port 8000"
+  },
+  "keywords": [
+    "php",
+    "tech-repair",
+    "nullified-solutions"
+  ],
+  "author": "Nullified Solutions",
+  "license": "ISC"
+}
